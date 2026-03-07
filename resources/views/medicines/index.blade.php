@@ -74,7 +74,7 @@
                                                class="text-yellow-600 hover:text-yellow-900">Edit</a>
                                             @can('delete medicines')
                                                 <form action="{{ route('medicines.destroy', $medicine) }}" method="POST"
-                                                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus obat ini?')">
+                                                      class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>

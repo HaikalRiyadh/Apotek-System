@@ -69,32 +69,44 @@ class MasterDataSeeder extends Seeder
             ['code' => 'MED010', 'name' => 'Omeprazole 20mg', 'category_id' => 4, 'unit_id' => 2, 'default_purchase_price' => 1200, 'selling_price' => 2500, 'minimum_stock' => 50],
         ];
 
-        foreach ($medicines as $med) {
-            $medicine = Medicine::create(array_merge($med, ['stock_total' => 0]));
+        // Batch data per medicine: [batch_a_expired_days, batch_a_qty, batch_b_expired_days, batch_b_qty]
+        // Negative days = already expired, positive = days from now
+        $batchConfigs = [
+            ['a_days' => 365,  'a_qty' => 150, 'b_days' => 13,   'b_qty' => 80],   // MED001: B mendekati expired
+            ['a_days' => 300,  'a_qty' => 100, 'b_days' => -7,   'b_qty' => 40],   // MED002: B sudah expired
+            ['a_days' => 270,  'a_qty' => 120, 'b_days' => 23,   'b_qty' => 60],   // MED003: B mendekati expired
+            ['a_days' => 330,  'a_qty' => 100, 'b_days' => 25,   'b_qty' => 50],   // MED004: B mendekati expired
+            ['a_days' => 540,  'a_qty' => 200, 'b_days' => 3,    'b_qty' => 90],   // MED005: B sangat dekat expired
+            ['a_days' => 180,  'a_qty' => 50,  'b_days' => -20,  'b_qty' => 30],   // MED006: B sudah expired
+            ['a_days' => 420,  'a_qty' => 150, 'b_days' => 18,   'b_qty' => 70],   // MED007: B mendekati expired
+            ['a_days' => 240,  'a_qty' => 60,  'b_days' => -35,  'b_qty' => 25],   // MED008: B sudah expired
+            ['a_days' => 450,  'a_qty' => 100, 'b_days' => 29,   'b_qty' => 50],   // MED009: B mendekati expired
+            ['a_days' => 210,  'a_qty' => 80,  'b_days' => 7,    'b_qty' => 45],   // MED010: B sangat dekat expired
+        ];
 
-            // Create 2 batches for each medicine
-            $batch1Qty = rand(50, 200);
-            $batch2Qty = rand(30, 150);
+        foreach ($medicines as $index => $med) {
+            $medicine = Medicine::create(array_merge($med, ['stock_total' => 0]));
+            $config = $batchConfigs[$index];
 
             MedicineBatch::create([
                 'medicine_id' => $medicine->id,
                 'batch_number' => 'BATCH-' . $medicine->code . '-A',
-                'expired_date' => now()->addMonths(rand(6, 18)),
+                'expired_date' => now()->addDays($config['a_days'])->startOfDay(),
                 'purchase_price' => $med['default_purchase_price'],
-                'initial_quantity' => $batch1Qty,
-                'remaining_quantity' => $batch1Qty,
+                'initial_quantity' => $config['a_qty'],
+                'remaining_quantity' => $config['a_qty'],
             ]);
 
             MedicineBatch::create([
                 'medicine_id' => $medicine->id,
                 'batch_number' => 'BATCH-' . $medicine->code . '-B',
-                'expired_date' => now()->addMonths(rand(1, 5)),
+                'expired_date' => now()->addDays($config['b_days'])->startOfDay(),
                 'purchase_price' => $med['default_purchase_price'] * 1.05,
-                'initial_quantity' => $batch2Qty,
-                'remaining_quantity' => $batch2Qty,
+                'initial_quantity' => $config['b_qty'],
+                'remaining_quantity' => $config['b_qty'],
             ]);
 
-            $medicine->update(['stock_total' => $batch1Qty + $batch2Qty]);
+            $medicine->update(['stock_total' => $config['a_qty'] + $config['b_qty']]);
         }
     }
 }

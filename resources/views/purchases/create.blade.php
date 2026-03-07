@@ -13,7 +13,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <form method="POST" action="{{ route('purchases.store') }}"
                   x-data="{
-                      items: [{ medicine_id: '', quantity: 1, purchase_price: 0, batch_number: '', expired_date: '' }],
+                      items: {{ json_encode(old('items', [['medicine_id' => '', 'quantity' => 1, 'purchase_price' => 0, 'batch_number' => '', 'expired_date' => '']])) }},
                       addItem() {
                           this.items.push({ medicine_id: '', quantity: 1, purchase_price: 0, batch_number: '', expired_date: '' });
                       },
@@ -80,6 +80,23 @@
 
                     @if($errors->has('items'))
                         <div class="mb-4 text-sm text-red-600">{{ $errors->first('items') }}</div>
+                    @endif
+
+                    {{-- Show all item-level validation errors --}}
+                    @if($errors->any())
+                        @php
+                            $itemErrors = collect($errors->keys())->filter(fn($k) => str_starts_with($k, 'items.'))->map(fn($k) => $errors->first($k))->unique();
+                        @endphp
+                        @if($itemErrors->isNotEmpty())
+                            <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
+                                <p class="text-sm font-semibold text-red-700 mb-2">Terdapat kesalahan pada item pembelian:</p>
+                                <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
+                                    @foreach($itemErrors as $err)
+                                        <li>{{ $err }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     @endif
 
                     <div class="overflow-x-auto">

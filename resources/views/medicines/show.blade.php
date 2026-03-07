@@ -78,7 +78,7 @@
                                     $expired = \Carbon\Carbon::parse($batch->expired_date);
                                     $now = now();
                                     $isExpired = $expired->isPast();
-                                    $isNearExpiry = !$isExpired && $expired->diffInDays($now) <= 30;
+                                    $isNearExpiry = !$isExpired && (int) $expired->diffInDays($now) <= 30;
                                 @endphp
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $batch->batch_number }}</td>
