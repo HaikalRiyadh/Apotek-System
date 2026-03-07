@@ -1,190 +1,204 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
-            <span class="text-sm text-gray-400">{{ now()->translatedFormat('l, d F Y') }}</span>
-        </div>
+        <h2 class="text-xl font-bold text-slate-800">Dashboard</h2>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-
-            {{-- Summary Cards --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                {{-- Penjualan Hari Ini --}}
-                <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center text-lg">💰</div>
-                        <span class="text-sm font-medium text-gray-500">Penjualan Hari Ini</span>
+        {{-- Summary Cards --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {{-- Penjualan Hari Ini --}}
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="stat-icon bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg shadow-emerald-500/20">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
-                    <div class="text-2xl font-bold text-gray-800">Rp {{ number_format($salesToday, 0, ',', '.') }}</div>
-                    <div class="text-xs text-gray-400 mt-1">{{ $salesCountToday }} transaksi</div>
+                    <span class="text-xs text-slate-400 font-medium">{{ $salesCountToday }} transaksi</span>
                 </div>
+                <div class="text-2xl font-extrabold text-slate-800">Rp {{ number_format($salesToday, 0, ',', '.') }}</div>
+                <div class="text-xs text-slate-500 mt-1 font-medium">Penjualan Hari Ini</div>
+            </div>
 
-                {{-- Penjualan Bulan Ini --}}
-                <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-lg">📊</div>
-                        <span class="text-sm font-medium text-gray-500">Penjualan Bulan Ini</span>
+            {{-- Penjualan Bulan Ini --}}
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="stat-icon bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                     </div>
-                    <div class="text-2xl font-bold text-gray-800">Rp {{ number_format($salesMonth, 0, ',', '.') }}</div>
-                    <div class="text-xs text-gray-400 mt-1">Pembelian: Rp {{ number_format($purchasesMonth, 0, ',', '.') }}</div>
+                    <span class="badge badge-info">Bulan Ini</span>
                 </div>
+                <div class="text-2xl font-extrabold text-slate-800">Rp {{ number_format($salesMonth, 0, ',', '.') }}</div>
+                <div class="text-xs text-slate-500 mt-1 font-medium">Pembelian: Rp {{ number_format($purchasesMonth, 0, ',', '.') }}</div>
+            </div>
 
-                {{-- Laba Kotor --}}
-                <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-lg">📈</div>
-                        <span class="text-sm font-medium text-gray-500">Laba Kotor Bulan Ini</span>
+            {{-- Laba Kotor --}}
+            <div class="stat-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="stat-icon bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/20">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                     </div>
-                    <div class="text-2xl font-bold text-gray-800">Rp {{ number_format($grossProfitMonth, 0, ',', '.') }}</div>
-                    <div class="text-xs text-gray-400 mt-1">{{ $totalMedicines }} obat &middot; {{ $totalSuppliers }} supplier</div>
+                    <span class="badge badge-success">Profit</span>
                 </div>
+                <div class="text-2xl font-extrabold text-slate-800">Rp {{ number_format($grossProfitMonth, 0, ',', '.') }}</div>
+                <div class="text-xs text-slate-500 mt-1 font-medium">{{ $totalMedicines }} obat &middot; {{ $totalSuppliers }} supplier</div>
+            </div>
 
-                {{-- Peringatan --}}
-                <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-lg">⚠️</div>
-                        <span class="text-sm font-medium text-gray-500">Peringatan</span>
+            {{-- Peringatan --}}
+            <div class="stat-card {{ ($lowStock->count() > 0 || $expiring->count() > 0) ? 'ring-1 ring-red-100' : '' }}">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="stat-icon bg-gradient-to-br from-red-500 to-rose-600 shadow-lg shadow-red-500/20">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
                     </div>
-                    <div class="flex items-center gap-4 mt-1">
-                        <div>
-                            <div class="text-2xl font-bold {{ $lowStock->count() > 0 ? 'text-red-600' : 'text-gray-800' }}">{{ $lowStock->count() }}</div>
-                            <div class="text-xs text-gray-400">Stok Rendah</div>
-                        </div>
-                        <div class="w-px h-8 bg-gray-200"></div>
-                        <div>
-                            <div class="text-2xl font-bold {{ $expiring->count() > 0 ? 'text-orange-600' : 'text-gray-800' }}">{{ $expiring->count() }}</div>
-                            <div class="text-xs text-gray-400">Hampir Expired</div>
-                        </div>
+                    @if($lowStock->count() > 0 || $expiring->count() > 0)
+                        <span class="badge badge-danger">Perhatian</span>
+                    @endif
+                </div>
+                <div class="flex items-center gap-5">
+                    <div>
+                        <div class="text-2xl font-extrabold {{ $lowStock->count() > 0 ? 'text-red-600' : 'text-slate-800' }}">{{ $lowStock->count() }}</div>
+                        <div class="text-xs text-slate-500 font-medium">Stok Rendah</div>
+                    </div>
+                    <div class="w-px h-10 bg-slate-200"></div>
+                    <div>
+                        <div class="text-2xl font-extrabold {{ $expiring->count() > 0 ? 'text-amber-600' : 'text-slate-800' }}">{{ $expiring->count() }}</div>
+                        <div class="text-xs text-slate-500 font-medium">Hampir Expired</div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            {{-- Charts --}}
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                {{-- Sales & Purchases Chart --}}
-                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                    <h3 class="text-sm font-semibold text-gray-700 mb-4">Penjualan & Pembelian 7 Hari Terakhir</h3>
+        {{-- Charts --}}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {{-- Sales & Purchases Chart --}}
+            <div class="lg:col-span-2 card">
+                <div class="card-header">
+                    <h3 class="text-sm font-bold text-slate-700">Penjualan & Pembelian 7 Hari Terakhir</h3>
+                    <span class="badge badge-info">Mingguan</span>
+                </div>
+                <div class="card-body">
                     <canvas id="salesPurchasesChart" height="140"></canvas>
                 </div>
+            </div>
 
-                {{-- Top Medicines --}}
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                    <h3 class="text-sm font-semibold text-gray-700 mb-4">Top 5 Obat Terlaris</h3>
+            {{-- Top Medicines --}}
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-sm font-bold text-slate-700">Top 5 Obat Terlaris</h3>
+                    <span class="badge badge-success">Terbaik</span>
+                </div>
+                <div class="card-body">
                     <canvas id="topMedicinesChart" height="200"></canvas>
                 </div>
             </div>
+        </div>
 
-            {{-- Alert Tables --}}
-            @if($lowStock->count() > 0 || $expiring->count() > 0)
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                @if($lowStock->count() > 0)
-                <div x-data="{ open: true }" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition">
-                        <h3 class="text-sm font-semibold text-red-600 flex items-center gap-2">
-                            <span>⚠️</span> Stok Rendah
-                            <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-full">{{ $lowStock->count() }}</span>
-                        </h3>
-                        <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div x-show="open" x-collapse>
-                        <div class="overflow-x-auto border-t border-gray-100">
-                            <table class="min-w-full text-sm">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-500 text-xs uppercase">
-                                        <th class="text-left py-2.5 px-4 font-medium">Obat</th>
-                                        <th class="text-right py-2.5 px-4 font-medium">Stok</th>
-                                        <th class="text-right py-2.5 px-4 font-medium">Minimum</th>
-                                        <th class="text-right py-2.5 px-4 font-medium">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-50">
-                                    @foreach($lowStock->take(10) as $med)
-                                    <tr class="hover:bg-gray-50/50">
-                                        <td class="py-2.5 px-4 text-gray-700">{{ $med->name }}</td>
-                                        <td class="text-right py-2.5 px-4 font-semibold {{ $med->stock_total == 0 ? 'text-red-600' : 'text-orange-600' }}">{{ $med->stock_total }}</td>
-                                        <td class="text-right py-2.5 px-4 text-gray-500">{{ $med->minimum_stock }}</td>
-                                        <td class="text-right py-2.5 px-4">
-                                            @if($med->stock_total == 0)
-                                                <span class="px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 rounded-full">Habis</span>
-                                            @else
-                                                <span class="px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-700 rounded-full">Rendah</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        @if($lowStock->count() > 10)
-                            <div class="px-4 py-2.5 text-xs text-gray-400 border-t border-gray-50">dan {{ $lowStock->count() - 10 }} obat lainnya...</div>
-                        @endif
+        {{-- Alert Tables --}}
+        @if($lowStock->count() > 0 || $expiring->count() > 0)
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            @if($lowStock->count() > 0)
+            <div x-data="{ open: true }" class="card">
+                <button @click="open = !open" class="w-full card-header hover:bg-slate-50/50 transition-colors cursor-pointer">
+                    <h3 class="text-sm font-bold text-red-600 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                        Stok Rendah
+                        <span class="badge badge-danger">{{ $lowStock->count() }}</span>
+                    </h3>
+                    <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="open" x-collapse>
+                    <div class="overflow-x-auto">
+                        <table class="pro-table">
+                            <thead>
+                                <tr>
+                                    <th>Obat</th>
+                                    <th class="text-right">Stok</th>
+                                    <th class="text-right">Minimum</th>
+                                    <th class="text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($lowStock->take(10) as $med)
+                                <tr>
+                                    <td class="font-medium text-slate-700">{{ $med->name }}</td>
+                                    <td class="text-right font-bold {{ $med->stock_total == 0 ? 'text-red-600' : 'text-amber-600' }}">{{ $med->stock_total }}</td>
+                                    <td class="text-right text-slate-400">{{ $med->minimum_stock }}</td>
+                                    <td class="text-right">
+                                        @if($med->stock_total == 0)
+                                            <span class="badge badge-danger">Habis</span>
+                                        @else
+                                            <span class="badge badge-warning">Rendah</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
+                    @if($lowStock->count() > 10)
+                        <div class="px-5 py-3 text-xs text-slate-400 border-t border-slate-100">dan {{ $lowStock->count() - 10 }} obat lainnya...</div>
+                    @endif
                 </div>
-                @endif
-
-                @if($expiring->count() > 0)
-                <div x-data="{ open: true }" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition">
-                        <h3 class="text-sm font-semibold text-orange-600 flex items-center gap-2">
-                            <span>⏰</span> Mendekati Expired
-                            <span class="bg-orange-100 text-orange-700 text-xs font-bold px-2 py-0.5 rounded-full">{{ $expiring->count() }}</span>
-                        </h3>
-                        <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div x-show="open" x-collapse>
-                        <div class="overflow-x-auto border-t border-gray-100">
-                            <table class="min-w-full text-sm">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-500 text-xs uppercase">
-                                        <th class="text-left py-2.5 px-4 font-medium">Obat</th>
-                                        <th class="text-left py-2.5 px-4 font-medium">Batch</th>
-                                        <th class="text-right py-2.5 px-4 font-medium">Sisa</th>
-                                        <th class="text-right py-2.5 px-4 font-medium">Expired</th>
-                                        <th class="text-right py-2.5 px-4 font-medium">Sisa Hari</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-50">
-                                    @foreach($expiring->take(10) as $batch)
-                                    <tr class="hover:bg-gray-50/50">
-                                        <td class="py-2.5 px-4 text-gray-700">{{ $batch->medicine->name }}</td>
-                                        <td class="py-2.5 px-4 text-gray-500 text-xs font-mono">{{ $batch->batch_number }}</td>
-                                        <td class="text-right py-2.5 px-4 text-gray-700">{{ $batch->remaining_quantity }}</td>
-                                        <td class="text-right py-2.5 px-4 text-gray-500">{{ $batch->expired_date->format('d/m/Y') }}</td>
-                                        <td class="text-right py-2.5 px-4">
-                                            @php $daysLeft = (int) now()->diffInDays($batch->expired_date, false); @endphp
-                                            <span class="px-2 py-0.5 text-xs font-medium rounded-full {{ $daysLeft <= 7 ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700' }}">
-                                                {{ $daysLeft }} hari
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        @if($expiring->count() > 10)
-                            <div class="px-4 py-2.5 text-xs text-gray-400 border-t border-gray-50">dan {{ $expiring->count() - 10 }} batch lainnya...</div>
-                        @endif
-                    </div>
-                </div>
-                @endif
             </div>
             @endif
 
+            @if($expiring->count() > 0)
+            <div x-data="{ open: true }" class="card">
+                <button @click="open = !open" class="w-full card-header hover:bg-slate-50/50 transition-colors cursor-pointer">
+                    <h3 class="text-sm font-bold text-amber-600 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Mendekati Expired
+                        <span class="badge badge-warning">{{ $expiring->count() }}</span>
+                    </h3>
+                    <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="open" x-collapse>
+                    <div class="overflow-x-auto">
+                        <table class="pro-table">
+                            <thead>
+                                <tr>
+                                    <th>Obat</th>
+                                    <th>Batch</th>
+                                    <th class="text-right">Sisa</th>
+                                    <th class="text-right">Expired</th>
+                                    <th class="text-right">Sisa Hari</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($expiring->take(10) as $batch)
+                                <tr>
+                                    <td class="font-medium text-slate-700">{{ $batch->medicine->name }}</td>
+                                    <td class="text-slate-400 text-xs font-mono">{{ $batch->batch_number }}</td>
+                                    <td class="text-right text-slate-600">{{ $batch->remaining_quantity }}</td>
+                                    <td class="text-right text-slate-400">{{ $batch->expired_date->format('d/m/Y') }}</td>
+                                    <td class="text-right">
+                                        @php $daysLeft = (int) now()->diffInDays($batch->expired_date, false); @endphp
+                                        <span class="badge {{ $daysLeft <= 7 ? 'badge-danger' : 'badge-warning' }}">
+                                            {{ $daysLeft }} hari
+                                        </span>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @if($expiring->count() > 10)
+                        <div class="px-5 py-3 text-xs text-slate-400 border-t border-slate-100">dan {{ $expiring->count() - 10 }} batch lainnya...</div>
+                    @endif
+                </div>
+            </div>
+            @endif
         </div>
+        @endif
+
     </div>
 
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        Chart.defaults.font.family = "'Figtree', sans-serif";
+        Chart.defaults.font.family = "'Inter', sans-serif";
         Chart.defaults.font.size = 12;
-        Chart.defaults.color = '#6b7280';
+        Chart.defaults.color = '#94a3b8';
 
-        const palette = ['rgba(79,70,229,0.8)','rgba(16,185,129,0.8)','rgba(245,158,11,0.8)','rgba(239,68,68,0.8)','rgba(139,92,246,0.8)','rgba(6,182,212,0.8)','rgba(244,63,94,0.8)','rgba(34,197,94,0.8)'];
+        const palette = ['rgba(16,185,129,0.85)','rgba(59,130,246,0.85)','rgba(245,158,11,0.85)','rgba(239,68,68,0.85)','rgba(139,92,246,0.85)','rgba(6,182,212,0.85)','rgba(244,63,94,0.85)','rgba(34,197,94,0.85)'];
 
-        // Combined Sales & Purchases Chart
         const salesData = @json($salesChart);
         const purchasesData = @json($purchasesChart);
         new Chart(document.getElementById('salesPurchasesChart'), {
@@ -196,33 +210,34 @@
                         label: 'Penjualan',
                         data: salesData.map(d => d.total),
                         borderColor: 'rgb(16, 185, 129)',
-                        backgroundColor: 'rgba(16, 185, 129, 0.08)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.06)',
                         fill: true,
                         tension: 0.4,
-                        pointRadius: 3,
-                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'rgb(16, 185, 129)',
+                        borderWidth: 2.5,
                     },
                     {
                         label: 'Pembelian',
                         data: purchasesData.map(d => d.total),
-                        borderColor: 'rgb(139, 92, 246)',
-                        backgroundColor: 'rgba(139, 92, 246, 0.08)',
+                        borderColor: 'rgb(99, 102, 241)',
+                        backgroundColor: 'rgba(99, 102, 241, 0.06)',
                         fill: true,
                         tension: 0.4,
-                        pointRadius: 3,
-                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'rgb(99, 102, 241)',
+                        borderWidth: 2.5,
                     }
                 ]
             },
             options: {
                 responsive: true,
                 interaction: { mode: 'index', intersect: false },
-                plugins: { legend: { position: 'top', labels: { boxWidth: 10, usePointStyle: true, pointStyle: 'circle', padding: 16 } } },
-                scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { callback: v => 'Rp ' + (v/1000).toFixed(0) + 'rb' } }, x: { grid: { display: false } } }
+                plugins: { legend: { position: 'top', labels: { boxWidth: 8, usePointStyle: true, pointStyle: 'circle', padding: 20, font: { size: 12, weight: '600' } } } },
+                scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false }, ticks: { callback: v => 'Rp ' + (v/1000).toFixed(0) + 'rb', font: { size: 11 } } }, x: { grid: { display: false }, ticks: { font: { size: 11 } } } }
             }
         });
 
-        // Top Medicines (Horizontal Bar)
         const topData = @json($topMedicines);
         new Chart(document.getElementById('topMedicinesChart'), {
             type: 'bar',
@@ -231,19 +246,17 @@
                 datasets: [{
                     data: topData.map(d => parseInt(d.total_qty)),
                     backgroundColor: palette,
-                    borderRadius: 6,
-                    maxBarThickness: 28,
+                    borderRadius: 8,
+                    maxBarThickness: 24,
                 }]
             },
             options: {
                 indexAxis: 'y',
                 responsive: true,
                 plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } }, y: { grid: { display: false } } }
+                scales: { x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false }, ticks: { font: { size: 11 } } }, y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } } }
             }
         });
-
-
     </script>
     @endpush
 </x-app-layout>

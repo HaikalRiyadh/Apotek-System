@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
@@ -85,6 +86,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])
         ->name('activity-logs.index')
         ->middleware('role:Admin');
+
+    // Stock Adjustments
+    Route::middleware('permission:edit medicines')->group(function () {
+        Route::get('/stock-adjustments', [StockAdjustmentController::class, 'index'])->name('stock-adjustments.index');
+        Route::get('/stock-adjustments/create', [StockAdjustmentController::class, 'create'])->name('stock-adjustments.create');
+        Route::post('/stock-adjustments', [StockAdjustmentController::class, 'store'])->name('stock-adjustments.store');
+        Route::get('/stock-adjustments/dispose-expired', [StockAdjustmentController::class, 'disposeExpired'])->name('stock-adjustments.dispose-expired');
+        Route::post('/stock-adjustments/dispose-expired', [StockAdjustmentController::class, 'disposeExpiredStore'])->name('stock-adjustments.dispose-expired.store');
+        Route::get('/stock-adjustments/batches/{medicine}', [StockAdjustmentController::class, 'getBatches'])->name('stock-adjustments.batches');
+    });
 });
 
 require __DIR__.'/auth.php';

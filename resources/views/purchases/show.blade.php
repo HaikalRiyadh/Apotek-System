@@ -1,99 +1,86 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Detail Pembelian: {{ $purchase->invoice_number }}</h2>
-            <a href="{{ route('purchases.index') }}"
-               class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                &larr; Kembali
+        <div class="flex items-center gap-3">
+            <a href="{{ route('purchases.index') }}" class="btn-icon-sm bg-white text-slate-500 hover:bg-slate-50 border border-slate-200">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </a>
+            <h2 class="text-xl font-bold text-slate-800">Detail Pembelian</h2>
         </div>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Informasi Pembelian -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
-                <h3 class="text-lg font-semibold mb-4">Informasi Pembelian</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="max-w-7xl mx-auto space-y-5 animate-fade-in">
+        <div class="card">
+            <div class="card-header"><h3 class="font-semibold text-slate-700">Informasi Pembelian</h3></div>
+            <div class="card-body">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                        <span class="text-sm text-gray-500">No Invoice</span>
-                        <p class="text-gray-900 font-medium">{{ $purchase->invoice_number }}</p>
+                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">No Invoice</span>
+                        <p class="mt-1 text-sm font-semibold text-emerald-600">{{ $purchase->invoice_number }}</p>
                     </div>
                     <div>
-                        <span class="text-sm text-gray-500">Supplier</span>
-                        <p class="text-gray-900 font-medium">{{ $purchase->supplier->name ?? '-' }}</p>
+                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Supplier</span>
+                        <p class="mt-1 text-sm font-semibold text-slate-700">{{ $purchase->supplier->name ?? '-' }}</p>
                     </div>
                     <div>
-                        <span class="text-sm text-gray-500">Tanggal</span>
-                        <p class="text-gray-900 font-medium">{{ $purchase->purchase_date->format('d/m/Y') }}</p>
+                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Tanggal</span>
+                        <p class="mt-1 text-sm text-slate-600">{{ $purchase->purchase_date->format('d/m/Y') }}</p>
                     </div>
                     <div>
-                        <span class="text-sm text-gray-500">Total</span>
-                        <p class="text-gray-900 font-bold text-lg">Rp {{ number_format($purchase->total_amount, 0, ',', '.') }}</p>
+                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Total</span>
+                        <p class="mt-1 text-lg font-bold text-slate-800">Rp {{ number_format($purchase->total_amount, 0, ',', '.') }}</p>
                     </div>
                     <div>
-                        <span class="text-sm text-gray-500">Catatan</span>
-                        <p class="text-gray-900">{{ $purchase->notes ?? '-' }}</p>
+                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">User</span>
+                        <p class="mt-1 text-sm text-slate-600">{{ $purchase->user->name ?? '-' }}</p>
                     </div>
                     <div>
-                        <span class="text-sm text-gray-500">User</span>
-                        <p class="text-gray-900 font-medium">{{ $purchase->user->name ?? '-' }}</p>
+                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Catatan</span>
+                        <p class="mt-1 text-sm text-slate-600">{{ $purchase->notes ?? '-' }}</p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Detail Item -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <h3 class="text-lg font-semibold mb-4">Detail Item</h3>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+        <div class="card">
+            <div class="card-header"><h3 class="font-semibold text-slate-700">Detail Item</h3></div>
+            <div class="overflow-x-auto">
+                <table class="pro-table">
+                    <thead>
+                        <tr>
+                            <th>Obat</th>
+                            <th class="text-center">Qty</th>
+                            <th class="text-right">Harga Beli</th>
+                            <th class="text-right">Subtotal</th>
+                            <th>No Batch</th>
+                            <th>Expired</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($purchase->details as $detail)
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Obat</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Qty</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Harga Beli</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No Batch</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expired</th>
+                                <td class="font-medium text-slate-700">{{ $detail->medicine->name ?? '-' }}</td>
+                                <td class="text-center">{{ $detail->quantity }}</td>
+                                <td class="text-right text-slate-600">Rp {{ number_format($detail->purchase_price, 0, ',', '.') }}</td>
+                                <td class="text-right font-semibold text-slate-700">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                <td class="text-slate-500">{{ $detail->batch_number }}</td>
+                                <td>
+                                    @if($detail->expired_date)
+                                        <span class="{{ $detail->expired_date->isPast() ? 'text-red-500 font-semibold' : 'text-slate-500' }}">{{ $detail->expired_date->format('d/m/Y') }}</span>
+                                    @else - @endif
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse($purchase->details as $detail)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $detail->medicine->name ?? '-' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{{ $detail->quantity }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">Rp {{ number_format($detail->purchase_price, 0, ',', '.') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $detail->batch_number }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        @if($detail->expired_date)
-                                            <span class="{{ $detail->expired_date->isPast() ? 'text-red-600 font-semibold' : '' }}">
-                                                {{ $detail->expired_date->format('d/m/Y') }}
-                                            </span>
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
-                                        Tidak ada detail item.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                        <tfoot class="bg-gray-50">
-                            <tr>
-                                <td colspan="3" class="px-6 py-4 text-right text-sm font-bold text-gray-700 uppercase">Total</td>
-                                <td class="px-6 py-4 text-right text-sm font-bold text-gray-900">Rp {{ number_format($purchase->total_amount, 0, ',', '.') }}</td>
-                                <td colspan="2"></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+                        @empty
+                            <tr><td colspan="6" class="text-center py-8 text-sm text-slate-400">Tidak ada detail item</td></tr>
+                        @endforelse
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-slate-50">
+                            <td colspan="3" class="text-right font-bold text-slate-600 uppercase text-xs tracking-wider">Total</td>
+                            <td class="text-right font-bold text-emerald-600">Rp {{ number_format($purchase->total_amount, 0, ',', '.') }}</td>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>

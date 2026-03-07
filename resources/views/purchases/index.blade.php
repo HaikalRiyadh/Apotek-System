@@ -1,37 +1,41 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Daftar Pembelian</h2>
-            <a href="{{ route('purchases.create') }}"
-               class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+        <h2 class="text-xl font-bold text-slate-800">Pembelian</h2>
+    </x-slot>
+
+    <div class="max-w-7xl mx-auto space-y-6 animate-fade-in">
+        <div class="flex items-center justify-between">
+            <p class="text-sm text-slate-500">Riwayat transaksi pembelian obat</p>
+            <a href="{{ route('purchases.create') }}" class="btn-primary">
+                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Tambah Pembelian
             </a>
         </div>
-    </x-slot>
-
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Filter Tanggal -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
+        <!-- Filter -->
+        <div class="card">
+            <div class="card-body">
                 <form method="GET" action="{{ route('purchases.index') }}" class="flex flex-wrap gap-4 items-end">
-                    <div class="flex-1 min-w-48">
-                        <x-input-label for="search" value="Cari Invoice/Supplier" />
-                        <x-text-input id="search" name="search" type="text" class="mt-1 block w-full"
-                                       value="{{ request('search') }}" placeholder="No. invoice atau supplier..." />
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Cari Invoice/Supplier</label>
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="No. invoice atau supplier..."
+                                   class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-500 focus:ring-emerald-500/20">
+                        </div>
                     </div>
-                    <div class="w-48">
-                        <x-input-label for="start_date" value="Dari Tanggal" />
-                        <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full"
-                                       value="{{ request('start_date') }}" />
+                    <div class="w-44">
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Dari Tanggal</label>
+                        <input type="date" name="start_date" value="{{ request('start_date') }}"
+                               class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-500 focus:ring-emerald-500/20">
                     </div>
-                    <div class="w-48">
-                        <x-input-label for="end_date" value="Sampai Tanggal" />
-                        <x-text-input id="end_date" name="end_date" type="date" class="mt-1 block w-full"
-                                       value="{{ request('end_date') }}" />
+                    <div class="w-44">
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Sampai Tanggal</label>
+                        <input type="date" name="end_date" value="{{ request('end_date') }}"
+                               class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-500 focus:ring-emerald-500/20">
                     </div>
-                    <div class="w-40">
-                        <x-input-label for="status" value="Status" />
-                        <select id="status" name="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                    <div class="w-36">
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Status</label>
+                        <select name="status" class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-500 focus:ring-emerald-500/20">
                             <option value="">Semua</option>
                             <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
                             <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -39,61 +43,53 @@
                         </select>
                     </div>
                     <div class="flex gap-2">
-                        <x-primary-button type="submit">Filter</x-primary-button>
+                        <button type="submit" class="btn-primary !py-2">Filter</button>
                         @if(request()->hasAny(['search', 'start_date', 'end_date', 'status']))
-                            <a href="{{ route('purchases.index') }}"
-                               class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 transition">
-                                Reset
-                            </a>
+                            <a href="{{ route('purchases.index') }}" class="btn-secondary !py-2">Reset</a>
                         @endif
                     </div>
                 </form>
             </div>
+        </div>
 
-            <!-- Tabel Pembelian -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+        <!-- Table -->
+        <div class="card">
+            <div class="overflow-x-auto">
+                <table class="pro-table">
+                    <thead>
+                        <tr>
+                            <th>No Invoice</th>
+                            <th>Supplier</th>
+                            <th>Tanggal</th>
+                            <th class="text-right">Total</th>
+                            <th>User</th>
+                            <th class="text-center w-24">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($purchases as $purchase)
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No Invoice</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <td class="font-semibold text-emerald-600">{{ $purchase->invoice_number }}</td>
+                                <td class="text-slate-600">{{ $purchase->supplier->name ?? '-' }}</td>
+                                <td class="text-slate-500">{{ $purchase->purchase_date->format('d/m/Y') }}</td>
+                                <td class="text-right font-semibold text-slate-700">Rp {{ number_format($purchase->total_amount, 0, ',', '.') }}</td>
+                                <td class="text-slate-500">{{ $purchase->user->name ?? '-' }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('purchases.show', $purchase) }}"
+                                       class="btn-icon-sm bg-emerald-50 text-emerald-600 hover:bg-emerald-100" title="Lihat Detail">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    </a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse($purchases as $purchase)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{{ $purchase->invoice_number }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $purchase->supplier->name ?? '-' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $purchase->purchase_date->format('d/m/Y') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">Rp {{ number_format($purchase->total_amount, 0, ',', '.') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $purchase->user->name ?? '-' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                        <a href="{{ route('purchases.show', $purchase) }}"
-                                           class="text-indigo-600 hover:text-indigo-900">Lihat</a>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
-                                        Belum ada data pembelian.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-
-                @if($purchases->hasPages())
-                    <div class="px-6 py-4 border-t border-gray-200">
-                        {{ $purchases->withQueryString()->links() }}
-                    </div>
-                @endif
+                        @empty
+                            <tr><td colspan="6" class="text-center py-12"><svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg><p class="text-sm text-slate-400">Belum ada data pembelian</p></td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
+            @if($purchases->hasPages())
+            <div class="px-6 py-4 border-t border-slate-100">{{ $purchases->withQueryString()->links() }}</div>
+            @endif
         </div>
     </div>
 </x-app-layout>

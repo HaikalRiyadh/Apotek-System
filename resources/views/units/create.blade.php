@@ -1,46 +1,35 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Tambah Satuan') }}
-        </h2>
+        <div class="flex items-center gap-3">
+            <a href="{{ route('units.index') }}" class="btn-icon-sm bg-white text-slate-500 hover:bg-slate-50 border border-slate-200">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </a>
+            <h2 class="text-xl font-bold text-slate-800">Tambah Satuan</h2>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-
-                    <form action="{{ route('units.store') }}" method="POST">
-                        @csrf
-
-                        <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700">Nama <span class="text-red-500">*</span></label>
-                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            @error('name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="abbreviation" class="block text-sm font-medium text-gray-700">Singkatan</label>
-                            <input type="text" name="abbreviation" id="abbreviation" value="{{ old('abbreviation') }}"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            @error('abbreviation')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <button type="submit"
-                                    class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-                                Simpan
-                            </button>
-                            <a href="{{ route('units.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Batal</a>
-                        </div>
-                    </form>
-
-                </div>
+    <div class="max-w-2xl mx-auto animate-fade-in">
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('units.store') }}" method="POST" class="space-y-5">
+                    @csrf
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-slate-600 mb-1">Nama <span class="text-red-400">*</span></label>
+                        <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                               class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-500 focus:ring-emerald-500/20">
+                        @error('name')<p class="mt-1 text-sm text-red-500">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label for="abbreviation" class="block text-sm font-medium text-slate-600 mb-1">Singkatan</label>
+                        <input type="text" name="abbreviation" id="abbreviation" value="{{ old('abbreviation') }}"
+                               class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-500 focus:ring-emerald-500/20">
+                        @error('abbreviation')<p class="mt-1 text-sm text-red-500">{{ $message }}</p>@enderror
+                    </div>
+                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                        <a href="{{ route('units.index') }}" class="btn-secondary">Batal</a>
+                        <button type="submit" class="btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

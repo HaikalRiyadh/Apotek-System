@@ -1,221 +1,172 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="text-xl font-bold text-indigo-600">
-                        💊 Apotek Kita Sehat
-                    </a>
-                </div>
+{{-- Professional Sidebar Navigation --}}
+<aside :class="sidebarOpen ? 'sidebar mobile-open' : 'sidebar'"
+       class="flex flex-col" x-cloak>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-4 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        Dashboard
-                    </x-nav-link>
+    {{-- Logo --}}
+    <div class="flex items-center gap-3 px-5 py-5 border-b border-white/10">
+        <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 flex-shrink-0">
+            <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10 2a1 1 0 00-1 1v6H3a1 1 0 00-1 1v4a1 1 0 001 1h6v6a1 1 0 001 1h4a1 1 0 001-1v-6h6a1 1 0 001-1v-4a1 1 0 00-1-1h-6V3a1 1 0 00-1-1h-4z"/>
+            </svg>
+        </div>
+        <div class="overflow-hidden">
+            <h1 class="text-white font-bold text-sm tracking-tight truncate">Apotek Kita Sehat</h1>
+            <p class="text-slate-400 text-[10px] font-medium">Pharmacy Management</p>
+        </div>
+        {{-- Mobile Close --}}
+        <button @click="sidebarOpen = false" class="lg:hidden ml-auto p-1 text-slate-400 hover:text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+    </div>
 
-                    @can('view medicines')
-                    <x-nav-link :href="route('medicines.index')" :active="request()->routeIs('medicines.*')">
-                        Obat
-                    </x-nav-link>
-                    @endcan
+    {{-- Navigation Links --}}
+    <nav class="flex-1 overflow-y-auto py-4 space-y-1">
 
-                    @can('manage categories')
-                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
-                        Kategori
-                    </x-nav-link>
-                    @endcan
+        {{-- Dashboard --}}
+        <a href="{{ route('dashboard') }}"
+           class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 12a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1v-7z"/></svg>
+            <span>Dashboard</span>
+        </a>
 
-                    @can('manage units')
-                    <x-nav-link :href="route('units.index')" :active="request()->routeIs('units.*')">
-                        Satuan
-                    </x-nav-link>
-                    @endcan
+        {{-- Master Data Section --}}
+        <div class="px-5 pt-5 pb-2">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Master Data</p>
+        </div>
 
-                    @can('view suppliers')
-                    <x-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
-                        Supplier
-                    </x-nav-link>
-                    @endcan
+        @can('view medicines')
+        <a href="{{ route('medicines.index') }}"
+           class="sidebar-link {{ request()->routeIs('medicines.*') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+            <span>Obat</span>
+        </a>
+        @endcan
 
-                    @can('view purchases')
-                    <x-nav-link :href="route('purchases.index')" :active="request()->routeIs('purchases.*')">
-                        Pembelian
-                    </x-nav-link>
-                    @endcan
+        @can('manage categories')
+        <a href="{{ route('categories.index') }}"
+           class="sidebar-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+            <span>Kategori</span>
+        </a>
+        @endcan
 
-                    @can('create sales')
-                    <x-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
-                        POS
-                    </x-nav-link>
-                    @endcan
+        @can('manage units')
+        <a href="{{ route('units.index') }}"
+           class="sidebar-link {{ request()->routeIs('units.*') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            <span>Satuan</span>
+        </a>
+        @endcan
 
-                    @can('view sales')
-                    <x-nav-link :href="route('sales.index')" :active="request()->routeIs('sales.index')">
-                        Penjualan
-                    </x-nav-link>
-                    @endcan
+        @can('view suppliers')
+        <a href="{{ route('suppliers.index') }}"
+           class="sidebar-link {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            <span>Supplier</span>
+        </a>
+        @endcan
 
-                    @can('view reports')
-                    <div x-data="{ reportOpen: false }" class="relative flex items-center">
-                        <button @click="reportOpen = !reportOpen" @click.outside="reportOpen = false"
-                            class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition">
-                            Laporan
-                            <svg class="ml-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                        <div x-show="reportOpen" x-transition class="absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border z-50">
-                            <a href="{{ route('reports.sales') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Laporan Penjualan</a>
-                            <a href="{{ route('reports.purchases') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Laporan Pembelian</a>
-                            <a href="{{ route('reports.stock') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Laporan Stok</a>
-                            <a href="{{ route('reports.expiring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Obat Hampir Expired</a>
-                            <a href="{{ route('reports.gross-profit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Laba Kotor</a>
-                        </div>
-                    </div>
-                    @endcan
+        {{-- Transaction Section --}}
+        <div class="px-5 pt-5 pb-2">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Transaksi</p>
+        </div>
 
-                    @role('Admin')
-                    <x-nav-link :href="route('activity-logs.index')" :active="request()->routeIs('activity-logs.*')">
-                        Log Aktivitas
-                    </x-nav-link>
-                    @endrole
-                </div>
+        @can('create sales')
+        <a href="{{ route('sales.create') }}"
+           class="sidebar-link {{ request()->routeIs('sales.create') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+            <span>POS / Kasir</span>
+            <span class="ml-auto px-2 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-400 rounded-md">NEW</span>
+        </a>
+        @endcan
+
+        @can('view sales')
+        <a href="{{ route('sales.index') }}"
+           class="sidebar-link {{ request()->routeIs('sales.index') || request()->routeIs('sales.show') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+            <span>Penjualan</span>
+        </a>
+        @endcan
+
+        @can('view purchases')
+        <a href="{{ route('purchases.index') }}"
+           class="sidebar-link {{ request()->routeIs('purchases.*') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            <span>Pembelian</span>
+        </a>
+        @endcan
+
+        @can('edit medicines')
+        <a href="{{ route('stock-adjustments.index') }}"
+           class="sidebar-link {{ request()->routeIs('stock-adjustments.*') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <span>Penyesuaian Stok</span>
+        </a>
+        @endcan
+
+        {{-- Reports Section --}}
+        @can('view reports')
+        <div class="px-5 pt-5 pb-2">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Laporan</p>
+        </div>
+
+        <div x-data="{ reportExpand: {{ request()->routeIs('reports.*') ? 'true' : 'false' }} }">
+            <button @click="reportExpand = !reportExpand"
+                class="sidebar-link w-full {{ request()->routeIs('reports.*') ? 'text-emerald-400' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Laporan</span>
+                <svg :class="reportExpand ? 'rotate-180' : ''" class="w-4 h-4 ml-auto transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+
+            <div x-show="reportExpand" x-collapse x-cloak class="mt-1 space-y-0.5 ml-5 border-l border-white/10 pl-3">
+                <a href="{{ route('reports.sales') }}" class="sidebar-link !mx-0 !px-3 text-xs {{ request()->routeIs('reports.sales') ? 'active' : '' }}">
+                    <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('reports.sales') ? 'bg-emerald-400' : 'bg-slate-500' }}"></span>
+                    <span>Penjualan</span>
+                </a>
+                <a href="{{ route('reports.purchases') }}" class="sidebar-link !mx-0 !px-3 text-xs {{ request()->routeIs('reports.purchases') ? 'active' : '' }}">
+                    <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('reports.purchases') ? 'bg-emerald-400' : 'bg-slate-500' }}"></span>
+                    <span>Pembelian</span>
+                </a>
+                <a href="{{ route('reports.stock') }}" class="sidebar-link !mx-0 !px-3 text-xs {{ request()->routeIs('reports.stock') ? 'active' : '' }}">
+                    <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('reports.stock') ? 'bg-emerald-400' : 'bg-slate-500' }}"></span>
+                    <span>Stok Obat</span>
+                </a>
+                <a href="{{ route('reports.expiring') }}" class="sidebar-link !mx-0 !px-3 text-xs {{ request()->routeIs('reports.expiring') ? 'active' : '' }}">
+                    <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('reports.expiring') ? 'bg-emerald-400' : 'bg-slate-500' }}"></span>
+                    <span>Hampir Expired</span>
+                </a>
+                <a href="{{ route('reports.gross-profit') }}" class="sidebar-link !mx-0 !px-3 text-xs {{ request()->routeIs('reports.gross-profit') ? 'active' : '' }}">
+                    <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('reports.gross-profit') ? 'bg-emerald-400' : 'bg-slate-500' }}"></span>
+                    <span>Laba Kotor</span>
+                </a>
             </div>
+        </div>
+        @endcan
 
-            <!-- Notification Bell & Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <!-- Notification Bell -->
-                <div x-data="{ notifOpen: false }" class="relative mr-3">
-                    <button @click="notifOpen = !notifOpen" @click.outside="notifOpen = false"
-                        class="relative inline-flex items-center p-2 text-gray-500 hover:text-gray-700 focus:outline-none transition">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                        </svg>
-                        @if(auth()->user()->unreadNotifications->count() > 0)
-                            <span class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
-                                {{ auth()->user()->unreadNotifications->count() > 9 ? '9+' : auth()->user()->unreadNotifications->count() }}
-                            </span>
-                        @endif
-                    </button>
+        {{-- System Section --}}
+        @role('Admin')
+        <div class="px-5 pt-5 pb-2">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sistem</p>
+        </div>
 
-                    <div x-show="notifOpen" x-transition class="absolute right-0 mt-1 w-80 bg-white rounded-md shadow-lg border z-50 max-h-96 overflow-y-auto">
-                        <div class="px-4 py-3 border-b bg-gray-50 flex justify-between items-center">
-                            <span class="font-semibold text-sm text-gray-700">Notifikasi</span>
-                            <a href="{{ route('notifications.index') }}" class="text-xs text-indigo-600 hover:text-indigo-800">Lihat semua</a>
-                        </div>
-                        @forelse(auth()->user()->notifications->take(5) as $notification)
-                            <div class="px-4 py-3 border-b {{ $notification->read_at ? 'bg-white' : 'bg-indigo-50' }} hover:bg-gray-50">
-                                <div class="flex items-start gap-2">
-                                    @if($notification->data['type'] === 'low_stock')
-                                        <span class="text-red-500 mt-0.5">⚠️</span>
-                                    @else
-                                        <span class="text-orange-500 mt-0.5">⏰</span>
-                                    @endif
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-800 truncate">{{ $notification->data['title'] }}</p>
-                                        <p class="text-xs text-gray-500 truncate">{{ $notification->data['message'] }}</p>
-                                        <p class="text-xs text-gray-400 mt-1">{{ $notification->created_at->diffForHumans() }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="px-4 py-6 text-center text-sm text-gray-400">Tidak ada notifikasi</div>
-                        @endforelse
-                    </div>
-                </div>
+        <a href="{{ route('activity-logs.index') }}"
+           class="sidebar-link {{ request()->routeIs('activity-logs.*') ? 'active' : '' }}">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Log Aktivitas</span>
+        </a>
+        @endrole
+    </nav>
 
-                <span class="text-xs text-gray-400 mr-3">{{ Auth::user()->roles->pluck('name')->first() }}</span>
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault(); this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
+    {{-- User Info at Bottom --}}
+    <div class="border-t border-white/10 p-4">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
             </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+            <div class="overflow-hidden">
+                <p class="text-sm font-semibold text-white truncate">{{ Auth::user()->name }}</p>
+                <p class="text-[11px] text-slate-400 truncate">{{ Auth::user()->roles->pluck('name')->first() }}</p>
             </div>
         </div>
     </div>
-
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard</x-responsive-nav-link>
-            @can('view medicines')
-            <x-responsive-nav-link :href="route('medicines.index')">Obat</x-responsive-nav-link>
-            @endcan
-            @can('manage categories')
-            <x-responsive-nav-link :href="route('categories.index')">Kategori</x-responsive-nav-link>
-            @endcan
-            @can('manage units')
-            <x-responsive-nav-link :href="route('units.index')">Satuan</x-responsive-nav-link>
-            @endcan
-            @can('view suppliers')
-            <x-responsive-nav-link :href="route('suppliers.index')">Supplier</x-responsive-nav-link>
-            @endcan
-            @can('view purchases')
-            <x-responsive-nav-link :href="route('purchases.index')">Pembelian</x-responsive-nav-link>
-            @endcan
-            @can('create sales')
-            <x-responsive-nav-link :href="route('sales.create')">POS</x-responsive-nav-link>
-            @endcan
-            @can('view sales')
-            <x-responsive-nav-link :href="route('sales.index')">Penjualan</x-responsive-nav-link>
-            @endcan
-            @can('view reports')
-            <x-responsive-nav-link :href="route('reports.sales')">Lap. Penjualan</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('reports.purchases')">Lap. Pembelian</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('reports.stock')">Lap. Stok</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('reports.expiring')">Obat Hampir Expired</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('reports.gross-profit')">Laba Kotor</x-responsive-nav-link>
-            @endcan
-            @role('Admin')
-            <x-responsive-nav-link :href="route('activity-logs.index')">Log Aktivitas</x-responsive-nav-link>
-            @endrole
-        </div>
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">{{ __('Profile') }}</x-responsive-nav-link>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Log Out') }}</x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
-    </div>
-</nav>
+</aside>
