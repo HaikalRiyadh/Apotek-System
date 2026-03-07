@@ -19,6 +19,11 @@
                 <div class="p-6">
                     <form method="GET" action="{{ route('sales.index') }}" class="flex flex-wrap items-end gap-4">
                         <div>
+                            <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Cari Invoice/Kasir</label>
+                            <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="No. invoice atau kasir..."
+                                   class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                        </div>
+                        <div>
                             <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">Dari Tanggal</label>
                             <input type="date" name="start_date" id="start_date" value="{{ request('start_date') }}"
                                    class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
@@ -27,6 +32,15 @@
                             <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">Sampai Tanggal</label>
                             <input type="date" name="end_date" id="end_date" value="{{ request('end_date') }}"
                                    class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                        </div>
+                        <div>
+                            <label for="payment_method" class="block text-sm font-medium text-gray-700 mb-1">Pembayaran</label>
+                            <select name="payment_method" id="payment_method"
+                                    class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                <option value="">Semua</option>
+                                <option value="cash" {{ request('payment_method') == 'cash' ? 'selected' : '' }}>Cash</option>
+                                <option value="transfer" {{ request('payment_method') == 'transfer' ? 'selected' : '' }}>Transfer</option>
+                            </select>
                         </div>
                         <div class="flex gap-2">
                             <button type="submit"

@@ -7,6 +7,7 @@ use App\Models\MedicineBatch;
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Models\Purchase;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -52,7 +53,8 @@ class ReportService
     public function salesReport(string $startDate, string $endDate)
     {
         return Sale::with('details.medicine', 'user')
-            ->whereBetween('sale_date', [$startDate, $endDate])
+            ->whereDate('sale_date', '>=', $startDate)
+            ->whereDate('sale_date', '<=', $endDate)
             ->orderBy('sale_date', 'desc')
             ->get();
     }
@@ -60,7 +62,8 @@ class ReportService
     public function purchasesReport(string $startDate, string $endDate)
     {
         return Purchase::with('details.medicine', 'supplier', 'user')
-            ->whereBetween('purchase_date', [$startDate, $endDate])
+            ->whereDate('purchase_date', '>=', $startDate)
+            ->whereDate('purchase_date', '<=', $endDate)
             ->orderBy('purchase_date', 'desc')
             ->get();
     }
@@ -98,7 +101,8 @@ class ReportService
     public function grossProfitReport(string $startDate, string $endDate)
     {
         $sales = Sale::with('details.medicine')
-            ->whereBetween('sale_date', [$startDate, $endDate])
+            ->whereDate('sale_date', '>=', $startDate)
+            ->whereDate('sale_date', '<=', $endDate)
             ->orderBy('sale_date', 'desc')
             ->get();
 
@@ -126,5 +130,85 @@ class ReportService
             ->whereColumn('stock_total', '<=', 'minimum_stock')
             ->orderBy('stock_total')
             ->get();
+    }
+
+    public function purchasesToday(): float
+    {
+        return Purchase::whereDate('purchase_date', today())->sum('total_amount');
+    }
+
+    public function purchasesThisMonth(): float
+    {
+        return Purchase::whereMonth('purchase_date', now()->month)
+            ->whereYear('purchase_date', now()->year)
+            ->sum('total_amount');
+    }
+
+    public function grossProfitThisMonth(): float
+    {
+        $startDate = now()->startOfMonth()->toDateString();
+        $endDate = now()->toDateString();
+        $report = $this->grossProfitReport($startDate, $endDate);
+        return $report['gross_profit'];
+    }
+
+    public function totalMedicines(): int
+    {
+        return Medicine::count();
+    }
+
+    public function totalSuppliers(): int
+    {
+        return Supplier::count();
+    }
+
+    public function salesCountToday(): int
+    {
+        return Sale::whereDate('sale_date', today())->count();
+    }
+
+    public function purchasesLast7Days(): array
+    {
+        $data = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = Carbon::today()->subDays($i);
+            $total = Purchase::whereDate('purchase_date', $date)->sum('total_amount');
+            $data[] = [
+                'date' => $date->format('d M'),
+                'total' => (float) $total,
+            ];
+        }
+        return $data;
+    }
+
+    public function monthlySalesComparison(): array
+    {
+        $data = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $total = Sale::whereMonth('sale_date', $date->month)
+                ->whereYear('sale_date', $date->year)
+                ->sum('grand_total');
+            $data[] = [
+                'month' => $date->format('M Y'),
+                'total' => (float) $total,
+            ];
+        }
+        return $data;
+    }
+
+    public function categorySalesDistribution(): array
+    {
+        return DB::table('sale_details')
+            ->join('medicines', 'sale_details.medicine_id', '=', 'medicines.id')
+            ->join('categories', 'medicines.category_id', '=', 'categories.id')
+            ->join('sales', 'sale_details.sale_id', '=', 'sales.id')
+            ->whereMonth('sales.sale_date', now()->month)
+            ->whereYear('sales.sale_date', now()->year)
+            ->select('categories.name', DB::raw('SUM(sale_details.subtotal) as total'))
+            ->groupBy('categories.name')
+            ->orderByDesc('total')
+            ->get()
+            ->toArray();
     }
 }

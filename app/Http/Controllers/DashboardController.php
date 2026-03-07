@@ -18,13 +18,29 @@ class DashboardController extends Controller
         $lowStock = $this->reportService->lowStockMedicines();
         $expiring = $this->reportService->expiringMedicines(30);
 
+        // Enhanced analytics
+        $purchasesToday = $this->reportService->purchasesToday();
+        $purchasesMonth = $this->reportService->purchasesThisMonth();
+        $grossProfitMonth = $this->reportService->grossProfitThisMonth();
+        $totalMedicines = $this->reportService->totalMedicines();
+        $totalSuppliers = $this->reportService->totalSuppliers();
+        $salesCountToday = $this->reportService->salesCountToday();
+        $purchasesChart = $this->reportService->purchasesLast7Days();
+
         return view('dashboard', compact(
             'salesToday',
             'salesMonth',
             'topMedicines',
             'salesChart',
             'lowStock',
-            'expiring'
+            'expiring',
+            'purchasesToday',
+            'purchasesMonth',
+            'grossProfitMonth',
+            'totalMedicines',
+            'totalSuppliers',
+            'salesCountToday',
+            'purchasesChart'
         ));
     }
 }

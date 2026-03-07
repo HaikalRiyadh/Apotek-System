@@ -21,6 +21,25 @@
             @endif
 
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                <!-- Search Bar -->
+                <div class="p-4 border-b bg-gray-50">
+                    <form method="GET" action="{{ route('suppliers.index') }}" class="flex gap-3">
+                        <div class="flex-1">
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                   placeholder="Cari nama, email, telepon, atau kontak..."
+                                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                        </div>
+                        <button type="submit" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+                            🔍 Cari
+                        </button>
+                        @if(request('search'))
+                            <a href="{{ route('suppliers.index') }}" class="inline-flex items-center rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300">
+                                Reset
+                            </a>
+                        @endif
+                    </form>
+                </div>
+
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -45,8 +64,8 @@
                                         <a href="{{ route('suppliers.edit', $supplier) }}"
                                            class="mr-3 text-indigo-600 hover:text-indigo-900">Edit</a>
 
-                                        <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST" class="inline"
-                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus supplier ini?')">
+                                        <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST" class="inline
+                                              delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
