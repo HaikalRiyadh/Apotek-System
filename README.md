@@ -12,27 +12,6 @@ Sistem manajemen apotek modern berbasis web yang dirancang untuk mengelola **inv
 
 ---
 
-## 📋 Daftar Isi
-
-- [Fitur Utama](#-fitur-utama)
-- [Tech Stack](#-tech-stack)
-- [Arsitektur Sistem](#-arsitektur-sistem)
-- [Persyaratan Sistem](#-persyaratan-sistem)
-- [Instalasi](#-instalasi)
-- [Konfigurasi](#-konfigurasi)
-- [Penggunaan](#-penggunaan)
-- [Struktur Database (ERD)](#-struktur-database-erd)
-- [API Endpoint](#-api-endpoint)
-- [Role & Permission](#-role--permission)
-- [Business Flow](#-business-flow)
-- [Screenshot](#-screenshot)
-- [Testing](#-testing)
-- [Deployment](#-deployment)
-- [Kontribusi](#-kontribusi)
-- [Lisensi](#-lisensi)
-
----
-
 ## ✨ Fitur Utama
 
 ### 📦 Manajemen Inventori
@@ -364,27 +343,8 @@ Pelanggan → POS/Penjualan → FIFO Konsumsi Batch (stok turun)
 
 ---
 
-## 📸 Screenshot
 
-Lihat semua screenshot di [docs/SCREENSHOTS.md](docs/SCREENSHOTS.md)
-
----
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-php artisan test
-
-# Run specific test suite
-php artisan test --testsuite=Feature
-php artisan test --testsuite=Unit
-
-# With coverage
-php artisan test --coverage
 ```
-
----
 
 ## 🚀 Deployment
 
