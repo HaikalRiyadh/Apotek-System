@@ -15,7 +15,22 @@ class SaleController extends Controller
         $query = Sale::with('user');
 
         if ($request->filled('start_date') && $request->filled('end_date')) {
-            $query->whereBetween('sale_date', [$request->start_date, $request->end_date]);
+            $query->whereDate('sale_date', '>=', $request->start_date)
+                  ->whereDate('sale_date', '<=', $request->end_date);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_number', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($q2) use ($search) {
+                      $q2->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        if ($request->filled('payment_method')) {
+            $query->where('payment_method', $request->payment_method);
         }
 
         $sales = $query->orderBy('created_at', 'desc')->paginate(15)->withQueryString();

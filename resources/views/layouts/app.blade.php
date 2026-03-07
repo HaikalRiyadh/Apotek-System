@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @stack('styles')
     </head>
     <body class="font-sans antialiased">
@@ -28,25 +29,63 @@
                 </header>
             @endisset
 
-            <!-- Flash Messages -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-                @if(session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if(session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
-                        {{ session('error') }}
-                    </div>
-                @endif
-            </div>
+            <!-- Flash Messages (SweetAlert) -->
+            @if(session('success'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: @js(session('success')),
+                            timer: 3000,
+                            showConfirmButton: false,
+                            toast: true,
+                            position: 'top-end'
+                        });
+                    });
+                </script>
+            @endif
+            @if(session('error'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: @js(session('error')),
+                            confirmButtonColor: '#dc2626'
+                        });
+                    });
+                </script>
+            @endif
 
             <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.delete-form').forEach(function(form) {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        Swal.fire({
+                            title: 'Apakah Anda yakin?',
+                            text: 'Data yang dihapus tidak dapat dikembalikan!',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#dc2626',
+                            cancelButtonColor: '#6b7280',
+                            confirmButtonText: 'Ya, Hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then(function(result) {
+                            if (result.isConfirmed) {
+                                form.submit();
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
         @stack('scripts')
     </body>
 </html>

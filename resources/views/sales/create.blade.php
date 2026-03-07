@@ -68,8 +68,8 @@
                 },
 
                 async submitSale() {
-                    if (this.cart.length === 0) { alert('Keranjang kosong!'); return; }
-                    if (this.amountPaid < this.grandTotal) { alert('Pembayaran kurang!'); return; }
+                    if (this.cart.length === 0) { Swal.fire({ icon: 'warning', title: 'Keranjang Kosong', text: 'Tambahkan obat ke keranjang terlebih dahulu!', confirmButtonColor: '#f59e0b' }); return; }
+                    if (this.amountPaid < this.grandTotal) { Swal.fire({ icon: 'warning', title: 'Pembayaran Kurang', text: 'Jumlah pembayaran kurang dari total belanja!', confirmButtonColor: '#f59e0b' }); return; }
                     this.loading = true;
                     try {
                         const res = await fetch('/sales', {
@@ -94,13 +94,19 @@
                         });
                         const data = await res.json();
                         if (data.success) {
-                            alert('Transaksi berhasil!');
-                            window.location.href = data.redirect;
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Transaksi Berhasil!',
+                                text: 'Data penjualan telah disimpan.',
+                                confirmButtonColor: '#4f46e5'
+                            }).then(() => {
+                                window.location.href = data.redirect;
+                            });
                         } else {
-                            alert(data.message || 'Terjadi kesalahan');
+                            Swal.fire({ icon: 'error', title: 'Gagal', text: data.message || 'Terjadi kesalahan', confirmButtonColor: '#dc2626' });
                         }
                     } catch (e) {
-                        alert('Error: ' + e.message);
+                        Swal.fire({ icon: 'error', title: 'Error', text: e.message, confirmButtonColor: '#dc2626' });
                     } finally {
                         this.loading = false;
                     }
@@ -112,7 +118,7 @@
                 {{-- LEFT: Search & Cart --}}
                 <div class="lg:col-span-2 space-y-6">
                     {{-- Search --}}
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="bg-white shadow-sm sm:rounded-lg relative z-10">
                         <div class="p-6">
                             <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Cari Obat</label>
                             <div class="relative">
@@ -133,7 +139,8 @@
                                 <div x-show="searchResults.length > 0"
                                      x-on:click.outside="searchResults = []"
                                      x-transition
-                                     class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-72 overflow-y-auto">
+                                     style="z-index: 9999;"
+                                     class="absolute w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-xl max-h-72 overflow-y-auto">
                                     <template x-for="(medicine, index) in searchResults" :key="medicine.id">
                                         <button type="button"
                                                 x-on:click="addToCart(medicine)"

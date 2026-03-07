@@ -14,6 +14,11 @@
             <!-- Filter Tanggal -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
                 <form method="GET" action="{{ route('purchases.index') }}" class="flex flex-wrap gap-4 items-end">
+                    <div class="flex-1 min-w-48">
+                        <x-input-label for="search" value="Cari Invoice/Supplier" />
+                        <x-text-input id="search" name="search" type="text" class="mt-1 block w-full"
+                                       value="{{ request('search') }}" placeholder="No. invoice atau supplier..." />
+                    </div>
                     <div class="w-48">
                         <x-input-label for="start_date" value="Dari Tanggal" />
                         <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full"
@@ -24,8 +29,23 @@
                         <x-text-input id="end_date" name="end_date" type="date" class="mt-1 block w-full"
                                        value="{{ request('end_date') }}" />
                     </div>
-                    <div>
+                    <div class="w-40">
+                        <x-input-label for="status" value="Status" />
+                        <select id="status" name="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                            <option value="">Semua</option>
+                            <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
                         <x-primary-button type="submit">Filter</x-primary-button>
+                        @if(request()->hasAny(['search', 'start_date', 'end_date', 'status']))
+                            <a href="{{ route('purchases.index') }}"
+                               class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 transition">
+                                Reset
+                            </a>
+                        @endif
                     </div>
                 </form>
             </div>
