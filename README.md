@@ -5,7 +5,6 @@
   <img src="https://img.shields.io/badge/PHP-8.2+-blue?style=for-the-badge&logo=php" />
   <img src="https://img.shields.io/badge/TailwindCSS-3-06B6D4?style=for-the-badge&logo=tailwindcss" />
   <img src="https://img.shields.io/badge/Alpine.js-3-8BC0D0?style=for-the-badge&logo=alpine.js" />
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
 </p>
 
 Sistem manajemen apotek modern berbasis web yang dirancang untuk mengelola **inventori obat**, **pembelian**, **penjualan (POS)**, **laporan keuangan**, dan **notifikasi** secara efisien. Dibangun dengan arsitektur **Laravel 12** + **Breeze** + **Spatie Permission** untuk keamanan berbasis **Role-Based Access Control (RBAC)**.
