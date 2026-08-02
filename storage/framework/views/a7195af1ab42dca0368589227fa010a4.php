@@ -1,0 +1,5 @@
+<button <?php echo e($attributes->merge(['type' => 'button', 'class' => 'inline-flex items-center px-5 py-2.5 bg-white border border-slate-200 rounded-xl font-semibold text-xs text-slate-600 uppercase tracking-widest shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150'])); ?>>
+    <?php echo e($slot); ?>
+
+</button>
+<?php /**PATH C:\laragon\www\Apotek_system\resources\views/components/secondary-button.blade.php ENDPATH**/ ?>

@@ -106,17 +106,20 @@ class MedicineController extends Controller
      */
     public function search(Request $request)
     {
-        $search = $request->get('q', '');
+        $search = trim((string) $request->get('q', ''));
 
-        $medicines = Medicine::with('unit')
-            ->where(function ($query) use ($search) {
+        $query = Medicine::with('unit')
+            ->where('stock_total', '>', 0)
+            ->orderBy('name');
+
+        if ($search !== '') {
+            $query->where(function ($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
                       ->orWhere('code', 'like', "%{$search}%");
-            })
-            ->where('stock_total', '>', 0)
-            ->limit(10)
-            ->get()
-            ->map(fn($m) => [
+            })->limit(10);
+        }
+
+        $medicines = $query->get()->map(fn($m) => [
                 'id' => $m->id,
                 'code' => $m->code,
                 'name' => $m->name,
